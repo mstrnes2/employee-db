@@ -1,10 +1,10 @@
-const mysql = require('mysql');
 const inquirer = require('inquirer');
-const connection = require('./config/connection');
+const db = require('./config/connection');
+const table = require('console.table');
 
-connection.connect(function (err) {
+db.connect(function (err) {
   if (err) throw err;
-  console.log('Connection Successful!' + '/n');
+  console.log('Connection Successful!');
   questions();
 })
 
@@ -28,48 +28,86 @@ function questions() {
 
       switch (answers.choices) {
         case "View All Employees":
-          viewEmployees()
+          viewEmployees();
           break;
         case "Add Employee":
-          addEmployee()
+          addEmployee();
           break;
         case "Update Employee Role":
-          updateEmployeeRole()
+          updateEmployeeRole();
           break;
         case "View All Roles":
-          viewRoles()
+          viewRoles();
           break;
         case "Add Role":
-          addRole()
+          addRole();
           break;
         case "View All Departments":
-          viewDepartments()
+          viewDepartments();
           break;
         case "Add Department":
-          addDepartment()
+          addDepartment();
           break;
         case "Quit":
+          console.log("Thank you. Goodbye!");
+          db.end();
       }
     })
 };
 
 function viewEmployees() {
-  connection.query("SELECT * FROM employee", function(err, data){
+  db.query("SELECT * FROM employee", function(err, data){
     console.table(data);
     questions();
   })
 };
 
 function viewRoles() {
-  connection.query("SELECT * FROM role", function(err, data){
+  db.query("SELECT * FROM role", function(err, data){
     console.table(data);
     questions();
   })
 };
 
 function viewDepartments() {
-  connection.query("SELECT * FROM department", function(err, data){
+  db.query("SELECT * FROM department", function(err, data){
     console.table(data);
     questions();
   })
 };
+
+function addEmployee() {
+  inquirer.prompt([
+  {
+    type: "input",
+    name: "firstName",
+    message: "What is the employees first name?"
+  },
+  {
+    type: "input",
+    name: "lastName",
+    message: "What is the employees last name?"
+  },
+  {
+
+  }
+])
+};
+
+function addRole() {
+  inquirer.prompt([
+    {
+      type: "input",
+      name: ""
+    }
+  ])
+};
+
+function addDepartment() {
+  inquirer.prompt([
+    {
+      type: "input",
+      name
+    }
+  ])
+}
